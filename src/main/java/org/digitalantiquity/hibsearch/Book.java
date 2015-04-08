@@ -39,16 +39,13 @@ import org.hibernate.search.spatial.Coordinates;
                         @Parameter(name = "language", value = "English")
                 })
         })
-@Indexed
+@Indexed(index="test")
 @Table
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Book {
+public class Book extends Persistable.Base {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @DocumentId
-    private Integer id;
-    
+    private static final long serialVersionUID = 1121737529921382954L;
+
     @Field(store = Store.YES)
     @Analyzer(definition = "customanalyzer")
     private String title;
@@ -87,14 +84,6 @@ public class Book {
         this.title = title;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public String getSubtitle() {
         return subtitle;
     }
@@ -111,7 +100,7 @@ public class Book {
         this.publicationDate = publicationDate;
     }
 
-    @Spatial(spatialMode = SpatialMode.HASH)
+    @Spatial(spatialMode = SpatialMode.HASH, name="spatial")
     public Coordinates getLlb() {
         return new Coordinates() {
             @Override
